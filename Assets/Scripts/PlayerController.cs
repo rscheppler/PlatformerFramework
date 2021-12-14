@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     //grab this to adjust physics
     private Rigidbody2D myRb;
+
     //used for checking what direction to be flipped
     private bool facingRight = true;
 
@@ -32,11 +33,15 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     private bool jumpPressed = true;
 
+    public float groundDrag = 5;
+    public float airDrag = 1;
+
 
     // Start is called before the first frame update
     void Start()
     {
         myRb = GetComponent<Rigidbody2D>();
+
         jumps = jumpTotal;
     }
 
@@ -50,12 +55,14 @@ public class PlayerController : MonoBehaviour
         //check if jump can be triggered
         if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true)
         {
-            myRb.velocity += Vector2.up * jumpForce;
+            myRb.drag = airDrag;
+            myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0) ;
             jumpPressed = true;
         }
         else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0)
         {
-            myRb.velocity += Vector2.up * jumpForce;
+            myRb.drag = airDrag;
+            myRb.velocity = ( Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
             jumpPressed = true;
             jumps--;
         }
@@ -74,8 +81,16 @@ public class PlayerController : MonoBehaviour
 
 
         moveInput = Input.GetAxisRaw("Horizontal");
-
-        myRb.velocity = new Vector2(moveInput * speed, myRb.velocity.y);
+        if (isGrounded && !jumpPressed)
+        {
+            myRb.drag = groundDrag;
+            myRb.AddForce(new Vector2(moveInput * speed * Time.fixedDeltaTime, 0));
+        }
+        else
+        {
+            myRb.drag = airDrag;
+            myRb.AddForce(new Vector2(moveInput * speed * Time.fixedDeltaTime * airDrag/groundDrag, 0));
+        }
         //check if we need to flip the player direction
         if (facingRight == false && moveInput > 0)
             Flip();
@@ -83,6 +98,10 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+
+
+       
+
     }
     //flip the player so sprite faces the other way
     void Flip()
