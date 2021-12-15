@@ -36,11 +36,16 @@ public class PlayerController : MonoBehaviour
     public float groundDrag = 5;
     public float airDrag = 1;
 
+    private AudioSource myAud;
+    public AudioClip jumpNoise;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         myRb = GetComponent<Rigidbody2D>();
+        myAud = GetComponent<AudioSource>();
 
         jumps = jumpTotal;
     }
@@ -55,12 +60,14 @@ public class PlayerController : MonoBehaviour
         //check if jump can be triggered
         if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true)
         {
+            myAud.PlayOneShot(jumpNoise);
             myRb.drag = airDrag;
             myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0) ;
             jumpPressed = true;
         }
         else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0)
         {
+            myAud.PlayOneShot(jumpNoise);
             myRb.drag = airDrag;
             myRb.velocity = ( Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
             jumpPressed = true;
@@ -110,5 +117,10 @@ public class PlayerController : MonoBehaviour
         Vector3 Scaler = transform.localScale;
         Scaler.x *= -1;
         transform.localScale = Scaler;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+   
     }
 }
