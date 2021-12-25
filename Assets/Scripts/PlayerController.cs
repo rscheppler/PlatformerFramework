@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 {
     //speed and movement variables
     public float speed;
-    private float moveInput;
+    private float moveInputH;
     //grab this to adjust physics
     private Rigidbody2D myRb;
 
@@ -38,6 +38,14 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource myAud;
     public AudioClip jumpNoise;
+
+    //ladder things
+    private bool isClimbing;
+    public LayerMask whatIsLadder;
+    public float ladderDist;
+    private float moveInputV;
+    private bool upPressed = false;
+
 
 
 
@@ -87,24 +95,51 @@ public class PlayerController : MonoBehaviour
 
 
 
-        moveInput = Input.GetAxisRaw("Horizontal");
+        moveInputH = Input.GetAxisRaw("Horizontal");
         if (isGrounded && !jumpPressed)
         {
             myRb.drag = groundDrag;
-            myRb.AddForce(new Vector2(moveInput * speed * Time.fixedDeltaTime, 0));
+            myRb.AddForce(new Vector2(moveInputH * speed * Time.fixedDeltaTime, 0));
         }
         else
         {
             myRb.drag = airDrag;
-            myRb.AddForce(new Vector2(moveInput * speed * Time.fixedDeltaTime * airDrag/groundDrag, 0));
+            myRb.AddForce(new Vector2(moveInputH * speed * Time.fixedDeltaTime * airDrag/groundDrag, 0));
         }
         //check if we need to flip the player direction
-        if (facingRight == false && moveInput > 0)
+        if (facingRight == false && moveInputH > 0)
             Flip();
-        else if(facingRight == true && moveInput < 0)
+        else if(facingRight == true && moveInputH < 0)
         {
             Flip();
         }
+
+        //ladder things
+
+        moveInputV = Input.GetAxisRaw("Vertical");
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.up, ladderDist, whatIsLadder);
+
+        if( moveInputV <= 0 )
+        {
+            upPressed = false;
+        }
+
+
+        if(hitInfo.collider != null)
+        {
+            
+            if(moveInputV > 0 && upPressed == false)
+            {
+                upPressed = true;
+                isClimbing = true;
+            }
+            else
+            {
+                isClimbing = false;
+            }
+        }
+
+
 
 
        
