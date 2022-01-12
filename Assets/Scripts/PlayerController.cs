@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatIsLadder;
     public float ladderDist;
     private float moveInputV;
-    private bool upPressed = false;
+    public float climbSpeed;
 
 
 
@@ -66,14 +66,14 @@ public class PlayerController : MonoBehaviour
             jumps = jumpTotal;
         }
         //check if jump can be triggered
-        if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true)
+        if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true && isClimbing == false)
         {
             myAud.PlayOneShot(jumpNoise);
             myRb.drag = airDrag;
             myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0) ;
             jumpPressed = true;
         }
-        else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0)
+        else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0 && isClimbing == false)
         {
             myAud.PlayOneShot(jumpNoise);
             myRb.drag = airDrag;
@@ -95,16 +95,48 @@ public class PlayerController : MonoBehaviour
 
 
 
+        //ladder things
+
+        moveInputV = Input.GetAxisRaw("Vertical");
+        //check for the ladder if around the player
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.up, ladderDist, whatIsLadder);
+        
+
+        //if ladder was found see if we are climbing, stop falling
+        if (hitInfo.collider != null)
+        {
+            myRb.gravityScale = 0;
+            isClimbing = true;
+            if(moveInputV > 0)
+            {
+                myRb.AddForce(new Vector2(0, climbSpeed));
+            }
+            else if(moveInputV < 0)
+            {
+                myRb.AddForce(new Vector2(0, -climbSpeed));
+            }
+            else
+            {
+                myRb.velocity = new Vector2(myRb.velocity.x, 0);
+            }
+        }
+        else
+        {
+            myRb.gravityScale = 1;
+            isClimbing = false;
+        }
+        
+        //horizontal movement
         moveInputH = Input.GetAxisRaw("Horizontal");
-        if (isGrounded && !jumpPressed)
+        if (isGrounded && !jumpPressed || isClimbing)
         {
             myRb.drag = groundDrag;
-            myRb.AddForce(new Vector2(moveInputH * speed * Time.fixedDeltaTime, 0));
+            myRb.AddForce(new Vector2(moveInputH * speed , 0));
         }
         else
         {
             myRb.drag = airDrag;
-            myRb.AddForce(new Vector2(moveInputH * speed * Time.fixedDeltaTime * airDrag/groundDrag, 0));
+            myRb.AddForce(new Vector2(moveInputH * speed  * airDrag/groundDrag, 0));
         }
         //check if we need to flip the player direction
         if (facingRight == false && moveInputH > 0)
@@ -113,36 +145,6 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
-
-        //ladder things
-
-        moveInputV = Input.GetAxisRaw("Vertical");
-        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.up, ladderDist, whatIsLadder);
-
-        if( moveInputV <= 0 )
-        {
-            upPressed = false;
-        }
-
-
-        if(hitInfo.collider != null)
-        {
-            
-            if(moveInputV > 0 && upPressed == false)
-            {
-                upPressed = true;
-                isClimbing = true;
-            }
-            else
-            {
-                isClimbing = false;
-            }
-        }
-
-
-
-
-       
 
     }
     //flip the player so sprite faces the other way
