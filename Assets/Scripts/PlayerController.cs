@@ -47,6 +47,10 @@ public class PlayerController : MonoBehaviour
     public float climbSpeed;
 
 
+    //Respawn info
+    [HideInInspector]
+    public Vector3 RespawnPoint = new Vector3();
+
 
 
     // Start is called before the first frame update
@@ -56,6 +60,8 @@ public class PlayerController : MonoBehaviour
         myAud = GetComponent<AudioSource>();
 
         jumps = jumpTotal;
+
+        RespawnPoint = transform.position;
     }
 
     //Update is called once per frame
@@ -158,6 +164,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-   
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            myRb.velocity = Vector2.zero;
+            transform.position = RespawnPoint;
+        }
     }
 }
