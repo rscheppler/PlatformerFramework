@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     private bool jumpPressed = true;
 
+    private float jumpTimer = 0;
+    public float jumpTime = 0.2f;
+
     public float groundDrag = 5;
     public float airDrag = 1;
 
@@ -45,7 +48,6 @@ public class PlayerController : MonoBehaviour
     public float ladderDist;
     private float moveInputV;
     public float climbSpeed;
-
 
     //Respawn info
     [HideInInspector]
@@ -90,6 +92,14 @@ public class PlayerController : MonoBehaviour
         else if(Input.GetAxisRaw("Jump") == 0)
         {
             jumpPressed = false;
+            jumpTimer = 0;
+        }
+        else if(jumpPressed == true && jumpTimer < jumpTime)
+        {
+            jumpTimer += Time.deltaTime;
+            myRb.drag = airDrag;
+            myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+            jumpPressed = true;
         }
     }
 
@@ -103,11 +113,10 @@ public class PlayerController : MonoBehaviour
 
         //ladder things
 
-        moveInputV = Input.GetAxisRaw("Vertical");
+        moveInputV = Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Jump");
         //check for the ladder if around the player
-        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.up, ladderDist, whatIsLadder);
+        RaycastHit2D hitInfo = Physics2D.Raycast(groundCheck.position, Vector2.up, ladderDist, whatIsLadder);
         
-
         //if ladder was found see if we are climbing, stop falling
         if (hitInfo.collider != null)
         {
