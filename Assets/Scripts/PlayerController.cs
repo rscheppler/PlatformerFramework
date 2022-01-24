@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 {
     //speed and movement variables
     public float speed;
+    public float airSpeed;
     private float moveInputH;
     //grab this to adjust physics
     private Rigidbody2D myRb;
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatIsGround;
 
     //jump things
-    public int jumpTotal = 1;
+    public int extraJumps = 1;
     private int jumps;
     public float jumpForce;
     private bool jumpPressed = true;
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
         myRb = GetComponent<Rigidbody2D>();
         myAud = GetComponent<AudioSource>();
 
-        jumps = jumpTotal;
+        jumps = extraJumps;
 
         RespawnPoint = transform.position;
     }
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         if(isGrounded == true)
         {
-            jumps = jumpTotal;
+            jumps = extraJumps;
         }
         //check if jump can be triggered
         if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true && isClimbing == false)
@@ -151,7 +152,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             myRb.drag = airDrag;
-            myRb.AddForce(new Vector2(moveInputH * speed  * airDrag/groundDrag, 0));
+            myRb.AddForce(new Vector2(moveInputH * airSpeed  , 0));
         }
         //check if we need to flip the player direction
         if (facingRight == false && moveInputH > 0)

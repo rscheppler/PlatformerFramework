@@ -294,16 +294,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
+  airSpeed: 25
   groundCheck: {fileID: 8397047255048113365}
   checkRadius: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1280
-  jumpTotal: 1
-  jumpForce: 5
-  jumpTime: 0.5
+  extraJumps: 1
+  jumpForce: 8
+  jumpTime: 0.3
   groundDrag: 10
-  airDrag: 0.5
+  airDrag: 0.3
   jumpNoise: {fileID: 8300000, guid: 39e815db8f7692a44ba7653e4d249281, type: 3}
   whatIsLadder:
     serializedVersion: 2
