@@ -6,6 +6,10 @@ public class Collectible : MonoBehaviour
 {
     public int points = 10;
 
+    public AudioClip PickUpNoise;
+
+    public GameObject SpawnOnPickUp;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +27,15 @@ public class Collectible : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             GameManager.score += points;
+            AudioSource PAud = collision.gameObject.GetComponent<AudioSource>();
+            if(PAud != null)
+            {
+                PAud.PlayOneShot(PickUpNoise);
+            }
+            if(SpawnOnPickUp != null)
+            {
+                Instantiate(SpawnOnPickUp, transform.position, transform.rotation);
+            }
             Destroy(gameObject);
         }
     }
