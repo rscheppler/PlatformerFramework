@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private float jumpTimer = 0;
     public float jumpTime = 0.2f;
 
+    public float gravityScale = 5;
+
     public float groundDrag = 5;
     public float airDrag = 1;
 
@@ -73,7 +75,9 @@ public class PlayerController : MonoBehaviour
     //Update is called once per frame
     private void Update()
     {
-        if(isGrounded == true)
+
+        moveInputH = Input.GetAxisRaw("Horizontal");
+        if (isGrounded == true)
         {
             jumps = extraJumps;
         }
@@ -82,14 +86,28 @@ public class PlayerController : MonoBehaviour
         {
             myAud.PlayOneShot(jumpNoise);
             myRb.drag = airDrag;
-            myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0) ;
+            if ((myRb.velocity.x < 0 && moveInputH > 0) || (myRb.velocity.x > 0 && moveInputH < 0))
+            {
+                myRb.velocity = (Vector2.up * jumpForce);
+            }
+            else
+            {
+                myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+            }
             jumpPressed = true;
         }
         else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0 && isClimbing == false)
         {
             myAud.PlayOneShot(jumpNoise);
             myRb.drag = airDrag;
-            myRb.velocity = ( Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+            if ((myRb.velocity.x < 0 && moveInputH > 0) || (myRb.velocity.x > 0 && moveInputH < 0))
+            {
+                myRb.velocity = (Vector2.up * jumpForce);
+            }
+            else
+            {
+                myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+            }
             jumpPressed = true;
             jumps--;
         }
@@ -142,7 +160,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            myRb.gravityScale = 1;
+            myRb.gravityScale = gravityScale;
             isClimbing = false;
         }
         
