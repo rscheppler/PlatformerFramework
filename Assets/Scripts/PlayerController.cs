@@ -54,13 +54,16 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Vector3 RespawnPoint = new Vector3();
 
-
+    //animation
+    private Animator myAnim;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         myRb = GetComponent<Rigidbody2D>();
         myAud = GetComponent<AudioSource>();
+        myAnim = GetComponent<Animator>();
 
         jumps = extraJumps;
 
@@ -110,7 +113,8 @@ public class PlayerController : MonoBehaviour
         //check for ground
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
-
+        //set animators on ground
+        myAnim.SetBool("OnGround", isGrounded);
 
         //ladder things
 
@@ -144,6 +148,16 @@ public class PlayerController : MonoBehaviour
         
         //horizontal movement
         moveInputH = Input.GetAxisRaw("Horizontal");
+        //animator settings
+        if(moveInputH == 0)
+        {
+            myAnim.SetBool("Moving", false);
+        }
+        else
+        {
+            myAnim.SetBool("Moving", true);
+        }
+
         if (isGrounded && !jumpPressed || isClimbing)
         {
             myRb.drag = groundDrag;
