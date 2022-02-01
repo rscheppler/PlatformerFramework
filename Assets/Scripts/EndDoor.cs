@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Add this to an object the player can collide with to go to a new level
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

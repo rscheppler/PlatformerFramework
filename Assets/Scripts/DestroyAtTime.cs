@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Add to things that need to disappear after a set time. 
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

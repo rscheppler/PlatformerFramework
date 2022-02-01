@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Should be on it's own game object likely alone, only one will exist at a time, handles variables and events more global affecting
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

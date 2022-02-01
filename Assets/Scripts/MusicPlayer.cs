@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Only one will exist at a time, but allows customizing tracks to different levels, and if 2 levels have the same track does not reset the music.
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

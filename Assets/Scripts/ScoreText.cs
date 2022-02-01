@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Add to the TMP Pro text object to keep score updated.
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

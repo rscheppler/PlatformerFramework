@@ -1,6 +1,6 @@
 ﻿/*****************************************
  * Edited by: Ryan Scheppler
- * Last Edited: 12/8/2021
+ * Last Edited: 1/27/2021
  * Description: This should be added to the player in a simple 2D platformer 
  * *************************************/
 

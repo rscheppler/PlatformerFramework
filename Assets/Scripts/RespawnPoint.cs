@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: This is to let the player have a new checkpoint to respawn at, includes color to change which looks active, will set color to normal on all others.
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

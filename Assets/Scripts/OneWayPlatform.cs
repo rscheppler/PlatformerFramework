@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Add to any one way platforms you want the player to be able to go down through, note that you may need another collider the player doesn't collide with to stop other objects and things.
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Add this to objects thaht are picked up by the player for points and removed
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

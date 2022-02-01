@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Addd to the main camera and the target is what it will try to follow, includes screen shake to be called as needed.
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

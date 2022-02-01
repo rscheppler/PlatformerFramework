@@ -1,3 +1,8 @@
+/*****************************************
+ * Edited by: Ryan Scheppler
+ * Last Edited: 1/27/2021
+ * Description: Very basic back and forth behavior for an enemy or thing.
+ * *************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
