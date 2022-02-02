@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private float moveInputH;
     //grab this to adjust physics
     private Rigidbody2D myRb;
+    private Collider2D myCollider;
 
     //used for checking what direction to be flipped
     private bool facingRight = true;
@@ -58,7 +59,11 @@ public class PlayerController : MonoBehaviour
 
     //animation
     private Animator myAnim;
-    
+
+    //Death things
+    public float deathTime = 1.1f;
+
+    private bool controlsOn = true;
 
     // Start is called before the first frame update
     void Start()
@@ -66,6 +71,7 @@ public class PlayerController : MonoBehaviour
         myRb = GetComponent<Rigidbody2D>();
         myAud = GetComponent<AudioSource>();
         myAnim = GetComponent<Animator>();
+        myCollider = GetComponent<Collider2D>();
 
         jumps = extraJumps;
 
@@ -75,123 +81,128 @@ public class PlayerController : MonoBehaviour
     //Update is called once per frame
     private void Update()
     {
-
-        moveInputH = Input.GetAxisRaw("Horizontal");
-        if (isGrounded == true)
+        if (controlsOn)
         {
-            jumps = extraJumps;
-        }
-        //check if jump can be triggered
-        if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true && isClimbing == false)
-        {
-            myAud.PlayOneShot(jumpNoise);
-            myRb.drag = airDrag;
-            if ((myRb.velocity.x < 0 && moveInputH > 0) || (myRb.velocity.x > 0 && moveInputH < 0))
+            moveInputH = Input.GetAxisRaw("Horizontal");
+            if (isGrounded == true)
             {
-                myRb.velocity = (Vector2.up * jumpForce);
+                jumps = extraJumps;
             }
-            else
+            //check if jump can be triggered
+            if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && isGrounded == true && isClimbing == false)
             {
+                myAud.PlayOneShot(jumpNoise);
+                myRb.drag = airDrag;
+                if ((myRb.velocity.x < 0 && moveInputH > 0) || (myRb.velocity.x > 0 && moveInputH < 0))
+                {
+                    myRb.velocity = (Vector2.up * jumpForce);
+                }
+                else
+                {
+                    myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+                }
+                jumpPressed = true;
+            }
+            else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0 && isClimbing == false)
+            {
+                myAud.PlayOneShot(jumpNoise);
+                myRb.drag = airDrag;
+                if ((myRb.velocity.x < 0 && moveInputH > 0) || (myRb.velocity.x > 0 && moveInputH < 0))
+                {
+                    myRb.velocity = (Vector2.up * jumpForce);
+                }
+                else
+                {
+                    myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+                }
+                jumpPressed = true;
+                jumps--;
+            }
+            else if (Input.GetAxisRaw("Jump") == 0)
+            {
+                jumpPressed = false;
+                jumpTimer = 0;
+            }
+            else if (jumpPressed == true && jumpTimer < jumpTime)
+            {
+                jumpTimer += Time.deltaTime;
+                myRb.drag = airDrag;
                 myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
+                jumpPressed = true;
             }
-            jumpPressed = true;
-        }
-        else if (Input.GetAxisRaw("Jump") == 1 && jumpPressed == false && jumps > 0 && isClimbing == false)
-        {
-            myAud.PlayOneShot(jumpNoise);
-            myRb.drag = airDrag;
-            if ((myRb.velocity.x < 0 && moveInputH > 0) || (myRb.velocity.x > 0 && moveInputH < 0))
-            {
-                myRb.velocity = (Vector2.up * jumpForce);
-            }
-            else
-            {
-                myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
-            }
-            jumpPressed = true;
-            jumps--;
-        }
-        else if(Input.GetAxisRaw("Jump") == 0)
-        {
-            jumpPressed = false;
-            jumpTimer = 0;
-        }
-        else if(jumpPressed == true && jumpTimer < jumpTime)
-        {
-            jumpTimer += Time.deltaTime;
-            myRb.drag = airDrag;
-            myRb.velocity = (Vector2.up * jumpForce) + new Vector2(myRb.velocity.x, 0);
-            jumpPressed = true;
         }
     }
 
     // FixedUpdate is called once per physics frame
     void FixedUpdate()
     {
-        //check for ground
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-
-        //set animators on ground
-        myAnim.SetBool("OnGround", isGrounded);
-
-        //ladder things
-
-        moveInputV = Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Jump");
-        //check for the ladder if around the player
-        RaycastHit2D hitInfo = Physics2D.Raycast(groundCheck.position, Vector2.up, ladderDist, whatIsLadder);
-        
-        //if ladder was found see if we are climbing, stop falling
-        if (hitInfo.collider != null)
+        if (controlsOn)
         {
-            myRb.gravityScale = 0;
-            isClimbing = true;
-            if(moveInputV > 0)
+            //check for ground
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+
+            //set animators on ground
+            myAnim.SetBool("OnGround", isGrounded);
+
+            //ladder things
+
+            moveInputV = Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Jump");
+            //check for the ladder if around the player
+            RaycastHit2D hitInfo = Physics2D.Raycast(groundCheck.position, Vector2.up, ladderDist, whatIsLadder);
+
+            //if ladder was found see if we are climbing, stop falling
+            if (hitInfo.collider != null)
             {
-                myRb.AddForce(new Vector2(0, climbSpeed));
-            }
-            else if(moveInputV < 0)
-            {
-                myRb.AddForce(new Vector2(0, -climbSpeed));
+                myRb.gravityScale = 0;
+                isClimbing = true;
+                if (moveInputV > 0)
+                {
+                    myRb.AddForce(new Vector2(0, climbSpeed));
+                }
+                else if (moveInputV < 0)
+                {
+                    myRb.AddForce(new Vector2(0, -climbSpeed));
+                }
+                else
+                {
+                    myRb.velocity = new Vector2(myRb.velocity.x, 0);
+                }
             }
             else
             {
-                myRb.velocity = new Vector2(myRb.velocity.x, 0);
+                myRb.gravityScale = gravityScale;
+                isClimbing = false;
             }
-        }
-        else
-        {
-            myRb.gravityScale = gravityScale;
-            isClimbing = false;
-        }
-        
-        //horizontal movement
-        moveInputH = Input.GetAxisRaw("Horizontal");
-        //animator settings
-        if(moveInputH == 0)
-        {
-            myAnim.SetBool("Moving", false);
-        }
-        else
-        {
-            myAnim.SetBool("Moving", true);
-        }
 
-        if (isGrounded && !jumpPressed || isClimbing)
-        {
-            myRb.drag = groundDrag;
-            myRb.AddForce(new Vector2(moveInputH * speed , 0));
-        }
-        else
-        {
-            myRb.drag = airDrag;
-            myRb.AddForce(new Vector2(moveInputH * airSpeed  , 0));
-        }
-        //check if we need to flip the player direction
-        if (facingRight == false && moveInputH > 0)
-            Flip();
-        else if(facingRight == true && moveInputH < 0)
-        {
-            Flip();
+            //horizontal movement
+            moveInputH = Input.GetAxisRaw("Horizontal");
+            //animator settings
+            if (moveInputH == 0)
+            {
+                myAnim.SetBool("Moving", false);
+            }
+            else
+            {
+                myAnim.SetBool("Moving", true);
+            }
+
+            if (isGrounded && !jumpPressed || isClimbing)
+            {
+                myRb.drag = groundDrag;
+                myRb.AddForce(new Vector2(moveInputH * speed, 0));
+            }
+            else
+            {
+                myRb.drag = airDrag;
+                myRb.AddForce(new Vector2(moveInputH * airSpeed, 0));
+            }
+            //check if we need to flip the player direction
+            if (facingRight == false && moveInputH > 0)
+                Flip();
+            else if (facingRight == true && moveInputH < 0)
+            {
+                Flip();
+            }
         }
 
     }
@@ -206,10 +217,33 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if(collision.gameObject.CompareTag("Enemy") && controlsOn)
         {
-            myRb.velocity = Vector2.zero;
-            transform.position = RespawnPoint;
+            StartCoroutine(OnDeath());
         }
     }
+
+    private IEnumerator OnDeath()
+    {
+        //stop moving temporarily
+        myRb.velocity = Vector2.zero;
+        //play Death animation
+        myAnim.Play("PlayerDeath");
+        //stop falling temporarily
+        myRb.gravityScale = 0;
+        //turn off collision temporarily
+        myCollider.enabled = false;
+        //disable all player controller things temporarily
+        controlsOn = false;
+
+        yield return new WaitForSeconds(deathTime);
+
+        //undo temporary changes after wait (note the animation transistions in the animator
+        controlsOn = true;
+        myCollider.enabled = true;
+        myRb.gravityScale = gravityScale;
+        
+        transform.position = RespawnPoint;
+    }
+
 }
