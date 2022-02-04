@@ -44,12 +44,27 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 015970736cfa36e4c88054972bb3d2ba, type: 3}
-    totalSpriteSurfaceArea: 26256
+    totalSpriteSurfaceArea: 72336
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: -669512247467982665, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -4952163481679523252, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -153636820869997659, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -1045567603951156638, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: 3043020784070771463, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -7845901090613453239, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: 2388517164766063630, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -2854110262119684812, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: 3916230906069860303, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: 1046285156731251181, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -6742213398491084448, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: 1789631906081506693, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -9120630089538121617, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: 5218580261869590449, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
+  - {fileID: -1261548220001104836, guid: 33b3df16ac73df348925b08aa94e23e3, type: 3}
   - {fileID: 4413142109597815103, guid: 29173af6ad4f8f34cae2f2ad028ec303, type: 3}
   - {fileID: -3674992999376901249, guid: 29173af6ad4f8f34cae2f2ad028ec303, type: 3}
   - {fileID: 4227826887867029099, guid: 29173af6ad4f8f34cae2f2ad028ec303, type: 3}
@@ -267,6 +282,21 @@ SpriteAtlas:
   - {fileID: 6731733094262721628, guid: d37e19ad10172ab4fb53c4f7e74a4e55, type: 3}
   - {fileID: 21300000, guid: 9448701fdbdfbdd4bb6d7a8e22c982cb, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Dark VFX 2 (48x64)_14
+  - Dark VFX 2 (48x64)_12
+  - Dark VFX 2 (48x64)_13
+  - Dark VFX 2 (48x64)_10
+  - Dark VFX 2 (48x64)_11
+  - Dark VFX 2 (48x64)_9
+  - Dark VFX 2 (48x64)_8
+  - Dark VFX 2 (48x64)_3
+  - Dark VFX 2 (48x64)_2
+  - Dark VFX 2 (48x64)_1
+  - Dark VFX 2 (48x64)_0
+  - Dark VFX 2 (48x64)_7
+  - Dark VFX 2 (48x64)_6
+  - Dark VFX 2 (48x64)_5
+  - Dark VFX 2 (48x64)_4
   - FlyingSlimeAttack_8
   - FlyingSlimeAttack_7
   - FlyingSlimeAttack_6

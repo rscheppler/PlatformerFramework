@@ -11,11 +11,11 @@ using UnityEngine.SceneManagement;
 
 //make a struct that can be seen in the editor that links a level to a music track
 [System.Serializable]
-    public struct LevelTrack
-    {
-        public string LevelName;
-        public AudioClip Music;
-    };
+public struct LevelTrack
+{
+    public string LevelName;
+    public AudioClip Music;
+};
 
 
 public class MusicPlayer : MonoBehaviour

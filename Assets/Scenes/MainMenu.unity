@@ -346,7 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTracks:
   - LevelName: MainMenu
-    Music: {fileID: 8300000, guid: 9dc278952fbd04f489c90dd679d54719, type: 3}
+    Music: {fileID: 8300000, guid: 98c252713cf55ee4386e074bbba33576, type: 3}
   - LevelName: BaseLevel
     Music: {fileID: 8300000, guid: 9dc278952fbd04f489c90dd679d54719, type: 3}
   - LevelName: EndScene
